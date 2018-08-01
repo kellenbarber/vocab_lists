@@ -1,0 +1,14 @@
+{
+  "name": "perseus_to_anki",
+  "version": "0.0.1",
+  "description": "Converts Perseus Project XML vocab files to anki txt files for import",
+  "main": "convert.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kellen Barber",
+  "license": "ISC",
+  "dependencies": {
+    "xml2js": "^0.4.19"
+  }
+}
