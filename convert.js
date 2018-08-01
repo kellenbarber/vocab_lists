@@ -15,7 +15,27 @@ fs.readFile(inputPath, 'utf8', (err, data) => {
 
     const doc = new dom().parseFromString(data);
     const table = xpath.select("table", doc)[0];
-    console.log("table: ", table);
-    // const rows = xpath.select("//tr", table);
-    // console.log(rows);
+    const rows = xpath.select("//tr", table);
+
+    let anki = [];
+
+    rows.forEach(row => {
+        const greek = xpath.select("string(.//td[2]/a)", row);
+        const english = xpath.select("string(.//td[8])", row);
+        let newAnki = { greek, english };
+        anki.push(newAnki);
+    });
+
+    let ankiString = "";
+
+    anki.forEach(card => {
+        ankiString += card.greek + ";" + card.english + "\r\n";
+    });
+
+    fs.writeFile(outputPath, ankiString, err => {
+        if (err) {
+            console.log(err);
+        }
+        console.log("written!");
+    });
 });
