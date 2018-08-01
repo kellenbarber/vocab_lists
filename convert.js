@@ -9,9 +9,13 @@ const outputPath = process.argv[3];
 
 fs.readFile(inputPath, 'utf8', (err, data) => {
     if (err) {
+        console.log("ERROR: ");
         console.log(err);
     }
 
     const doc = new dom().parseFromString(data);
-    console.log(doc);
+    const table = xpath.select("table", doc)[0];
+    console.log("table: ", table);
+    // const rows = xpath.select("//tr", table);
+    // console.log(rows);
 });
