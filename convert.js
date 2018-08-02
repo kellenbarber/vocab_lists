@@ -17,19 +17,24 @@ fs.readFile(inputPath, 'utf8', (err, data) => {
     const table = xpath.select("table", doc)[0];
     const rows = xpath.select("//tr", table);
 
-    let anki = [];
+    let anki = {};
 
     rows.forEach(row => {
         const greek = xpath.select("string(.//td[2]/a)", row);
         const english = xpath.select("string(.//td[8])", row);
-        let newAnki = { greek, english };
-        anki.push(newAnki);
+        if (!anki[greek]) {
+            anki[greek] = english;
+        } else {
+            let newEnglish = anki[greek] + ", " + english;
+            anki[greek] = newEnglish;
+        }
     });
 
     let ankiString = "";
 
-    anki.forEach(card => {
-        ankiString += card.greek + ";" + card.english + "\r\n";
+    Object.keys(anki).forEach(key => {
+        let cardText = anki[key].replace(";", "").replace(",,", ",").replace(/,\n\s+/, ", ");
+        ankiString += key + ";" + cardText + "\r\n";
     });
 
     fs.writeFile(outputPath, ankiString, err => {
